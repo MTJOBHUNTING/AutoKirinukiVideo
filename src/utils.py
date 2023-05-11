@@ -22,4 +22,4 @@ def make_dir_need_dirs():
     """ 実行に必要なフォルダが存在するか確認し、存在しなければ作成する """
     for need_dir_path in S_NEED_DIR_PATH_LIST:
         # フォルダが存在しなければ作成
-        need_dir_path.mkdir()
+        need_dir_path.mkdir(exist_ok=True)

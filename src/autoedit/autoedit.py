@@ -75,6 +75,4 @@ class AutoEdit:
                 temp_time = current_seconds
 
         return voice_time_range_data
-
-    def export_aviutl_exo_file():
-        pass
+    
