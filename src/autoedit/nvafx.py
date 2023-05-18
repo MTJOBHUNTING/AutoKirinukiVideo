@@ -1,6 +1,7 @@
 from autoedit.nvAudioEffects import *
 from message.log import *
 from autoedit.settings import S_NVAFX_MODELS_DIR_PATH
+from autoedit.mode import DetectMode
 from pathlib import Path
 from math import ceil, log10
 from tqdm import tqdm
@@ -17,7 +18,7 @@ class NvAFX:
         self.sample_rate = sample_rate # サンプルレート
         self.model_path = Path(S_NVAFX_MODELS_DIR_PATH, model_file) # 使用するモデルのパス
         self.debug_flag = debug_flag # デバッグモード
-        self.volume_level_np: np.ndarray = None # 音量(dB)のnumpyリスト
+        self.voice_detect_need_data_np: np.ndarray = None # 声を発した部分を判定するために必要なデータのnumpyリスト
         
         self.input_audio_path: Path = input_audio_path # ノイズ除去を行う音声ファイルパス
 
@@ -75,7 +76,7 @@ class NvAFX:
             }
         ]
 
-    def setup_and_run(self) -> bool:
+    def setup_and_run(self, detect_mode: DetectMode) -> bool:
         """
         NvAFXのセットアップと実行を行う関数
         (
@@ -142,7 +143,7 @@ class NvAFX:
             if self.debug_flag:
                 loop_range = tqdm(loop_range, desc=f'[{EnumLogType.DEFAULT.value}]: ')
 
-            self.volume_level_np = np.zeros(num_denoise_loops)
+            self.voice_detect_need_data_np = np.zeros(num_denoise_loops)
 
             for i in loop_range:
                 # 取得した音声データの一部(バイト型)
@@ -164,16 +165,26 @@ class NvAFX:
                 if not self.free_memory_on_failed_status(status):
                     return False
 
-                # audioop にとって扱いやすいデータに変換
-                _audio_data_int16_np = output_audio_data_temp_segment_np * input_audio_data_normalize_value
-                _audio_data_int16_np = _audio_data_int16_np.astype(dtype=audio_dtype)
-                _audio_data_int16_bytes = _audio_data_int16_np.tobytes()
+                # 音量データから検出する
+                if detect_mode == DetectMode.VOLUME:
+                    # audioop にとって扱いやすいデータに変換
+                    _audio_data_int16_np = output_audio_data_temp_segment_np * input_audio_data_normalize_value
+                    _audio_data_int16_np = _audio_data_int16_np.astype(dtype=audio_dtype)
+                    _audio_data_int16_bytes = _audio_data_int16_np.tobytes()
 
-                # 一部のノイズ除去データから音量(dB)を取得
-                volume_level = self.get_volume_level_from_denoise_audio_data(_audio_data_int16_bytes, input_audio_sample_width, input_audio_data_normalize_value)
+                    # 一部のノイズ除去データから音量(dB)を取得
+                    volume_level = self.get_volume_level_from_denoise_audio_data(_audio_data_int16_bytes, input_audio_sample_width, input_audio_data_normalize_value)
 
-                # 音量データを保存する
-                self.volume_level_np[i] = volume_level
+                    # 音量データを保存する
+                    self.voice_detect_need_data_np[i] = volume_level
+
+                # 波形データから検出する
+                elif detect_mode == DetectMode.WAVEFORM:
+                    # 波形データの一部から絶対値の最大値をとる
+                    waveform_abs_max = max(np.abs(output_audio_data_temp_segment_np))
+
+                    # 波形データの一部から最大値をとったものを保存する
+                    self.voice_detect_need_data_np[i] = waveform_abs_max
             
             if self.debug_flag:
                 print_log(EnumMessage.COMPLETE_DENOISE)

@@ -66,7 +66,7 @@ S_TEMP_INPUT_DIR_NAME: str = 'input'
 # 一時出力ファイルを保存するフォルダ名
 S_TEMP_OUTPUT_DIR_NAME: str = 'output'
 
-""" ジャンプカットするために必要なしきい値 """
+""" ジャンプカットするために必要なしきい値(音量モード) """
 # 指定した値以上であれば、声として認識する音量(パーセント)
 S_OPEN_VOICE_VOLUME_LEVEL_THRESHOLD:  float = 0.4
 # 指定した値以下であれば、雑音として認識する音量(パーセント)
@@ -75,3 +75,13 @@ S_CLOSE_VOICE_VOLUME_LEVEL_THRESHOLD: float = 0.3
 S_OPEN_VOICE_VOLUME_LEVEL_TIME:  float = 0.15
 # 何秒間 S_CLOSE_VOICE_VOLUME_LEVEL_THRESHOLD の値以下であれば、雑音として認識するのか
 S_CLOSE_VOICE_VOLUME_LEVEL_TIME: float = 0.15
+
+""" ジャンプカットするために必要なしきい値(波形モード) """
+# 指定した値以上であれば、声として認識する波形値
+S_VOICE_DETECT_THRESHOLD_WAVEFORM:   float = 0.05
+# 一瞬だけ無音と検出されないために、指定した秒数は無視する
+S_VOICE_DETECT_IGNORE_SILENCE_TIME_WAVEFORM: float = 0.3
+# 一瞬だけ声と検出されないために、指定した秒数は無視する
+S_VOICE_DETECT_IGNORE_VOICE_TIME_WAVEFORM: float = 0.15
+# ノイズ発生を最小限にするため、カットするタイミングから余分に声と判定させる秒数 (以下の値の秒数 x 2 = 余分に声と判定させる秒数)
+S_VOICE_DETECT_EXTRA_TIME_WAVEFORM: float = 0.1

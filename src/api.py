@@ -3,6 +3,7 @@ from settings import *
 from typing import Tuple
 from utils import get_file_types
 from pathlib import Path
+from autoedit.mode import DetectMode
 from autoedit.nvafx import NvAFX
 from autoedit.autoedit import AutoEdit
 from autoedit.extract_project import AviUtlFile, VideoData
@@ -44,7 +45,7 @@ class API:
 
         # ノイズ除去
         nvafx = NvAFX(temp_audio_file_path, debug_flag=S_DEBUG_FLAG, sample_rate=S_DENOISE_SAMPLE_RATE)
-        nvafx_success_flag = nvafx.setup_and_run() # セットアップとノイズ除去の実行
+        nvafx_success_flag = nvafx.setup_and_run(DetectMode.VOLUME) # セットアップとノイズ除去の実行
         
         # ノイズ除去に失敗した場合は終了する
         if not nvafx_success_flag:
@@ -54,9 +55,9 @@ class API:
         video_data = VideoData.from_path(file_path)
 
         # 自動動画編集を開始
-        autoedit = AutoEdit(int(video_data.get_fps()), file_path, nvafx.volume_level_np, nvafx.sample_rate, nvafx.num_samples_per_frame.value)
+        autoedit = AutoEdit(int(video_data.get_fps()), file_path, nvafx.voice_detect_need_data_np, nvafx.sample_rate, nvafx.num_samples_per_frame.value)
         # 声を発した部分をリスト化する
-        voice_time_range_list = autoedit.get_voice_time_range_list()
+        voice_time_range_list = autoedit.get_voice_time_range_list(DetectMode.VOLUME)
 
         # AviUtlのプロジェクトファイルとして保存する。
         aviutl_file = AviUtlFile(file_path, voice_time_range_list, video_data)
