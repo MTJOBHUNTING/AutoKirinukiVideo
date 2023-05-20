@@ -14,7 +14,7 @@
 ```
 git clone https://github.com/MTJOBHUNTING/AutoKirinukiVideo.git
 ```
-次に、Nodeパッケージのインストールを行います。
+次に、Node.jsパッケージのインストールを行います。
 ```
 npm ci
 ```
