@@ -6,14 +6,14 @@ class EnumLogType(Enum):
     ERROR: str = 'エラー'
 
 class EnumMessage(Enum):
-    START_SETUP: str = 'セットアップ中...'
-    COMPLETE_SETUP: str = 'セットアップが完了しました！'
-    START_DENOISE: str = 'ノイズを除去中...'
-    COMPLETE_DENOISE: str = 'ノイズ除去が完了しました！'
-    NOT_EXISTS_MODEL_FILE: str = 'モデルファイルが存在しません。'
-    FREE_MEMORY_ON_FAILED_STATUS: str = '失敗時のステータスです。メモリを解放します。'
+    NVAFX_START_SETUP: str = 'セットアップ中...'
+    NVAFX_COMPLETE_SETUP: str = 'セットアップが完了しました！'
+    NVAFX_START_DENOISE: str = 'ノイズを除去中...'
+    NVAFX_COMPLETE_DENOISE: str = 'ノイズ除去が完了しました！'
+    NVAFX_NOT_EXISTS_MODEL_FILE: str = 'モデルファイルが存在しません。'
+    NVAFX_FREE_MEMORY_ON_FAILED_STATUS: str = '失敗時のステータスです。メモリを解放します。'
 
-    DETECT_MODE: str = '検出モード: {}'
+    API_DETECT_MODE_VIEW: str = '検出モード: {}'
 
 def print_log(message: EnumMessage, log_type: EnumLogType = EnumLogType.DEFAULT, format_list: List[Any] = list()) -> None:
     """ ログを表示するための関数 """

@@ -25,7 +25,7 @@ class API:
 
         # 選択してる検出モードの表示(デバッグが有効の場合)
         if S_DEBUG_FLAG:
-            print_log(EnumMessage.DETECT_MODE, format_list=[target_detect_mode_str])
+            print_log(EnumMessage.API_DETECT_MODE_VIEW, format_list=[target_detect_mode_str])
 
         # 読み込み可能なファイルタイプ
         file_types: str = get_file_types(S_FILE_TYPE_VIDEO_NAME, S_VIDEO_FILE_EXTENSION_SET)

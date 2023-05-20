@@ -85,12 +85,12 @@ class NvAFX:
         )
         """
         if self.debug_flag:
-            print_log(EnumMessage.START_SETUP)
+            print_log(EnumMessage.NVAFX_START_SETUP)
 
         # モデルファイルが存在しない場合は終了
         if not self.model_path.exists():
             if self.debug_flag:
-                print_log(EnumMessage.NOT_EXISTS_MODEL_FILE, EnumLogType.ERROR)
+                print_log(EnumMessage.NVAFX_NOT_EXISTS_MODEL_FILE, EnumLogType.ERROR)
             return False
         
         # セットアップするための関数を呼び出す
@@ -109,7 +109,7 @@ class NvAFX:
             return False
 
         if self.debug_flag:
-            print_log(EnumMessage.COMPLETE_SETUP)
+            print_log(EnumMessage.NVAFX_COMPLETE_SETUP)
 
 
         # 音声データを読み込む
@@ -137,7 +137,7 @@ class NvAFX:
             loop_range = range(num_denoise_loops)
 
             if self.debug_flag:
-                print_log(EnumMessage.START_DENOISE)
+                print_log(EnumMessage.NVAFX_START_DENOISE)
 
             # デバッグモードが有効の場合は、tqdmで表示
             if self.debug_flag:
@@ -187,7 +187,7 @@ class NvAFX:
                     self.voice_detect_need_data_np[i] = waveform_abs_max
             
             if self.debug_flag:
-                print_log(EnumMessage.COMPLETE_DENOISE)
+                print_log(EnumMessage.NVAFX_COMPLETE_DENOISE)
                 
             # メモリ解放
             self.run_free_memory()
@@ -222,7 +222,7 @@ class NvAFX:
             return True
         
         if self.debug_flag:
-            print_log(EnumMessage.FREE_MEMORY_ON_FAILED_STATUS, EnumLogType.ERROR)
+            print_log(EnumMessage.NVAFX_FREE_MEMORY_ON_FAILED_STATUS, EnumLogType.ERROR)
 
         # メモリ解放
         self.run_free_memory()
