@@ -1,6 +1,6 @@
 from autoedit.nvAudioEffects import *
 from message.log import *
-from autoedit.settings import S_NVAFX_MODELS_DIR_PATH
+from settings import S_NVAFX_MODELS_DIR_PATH
 from autoedit.mode import DetectMode
 from pathlib import Path
 from math import ceil, log10

@@ -1,4 +1,6 @@
+from pathlib import Path
 from typing import Set
+import os
 
 # デバッグモード
 S_DEBUG_FLAG: bool = True
@@ -79,3 +81,9 @@ S_VOICE_DETECT_IGNORE_SILENCE_TIME_WAVEFORM: float = 0.3
 S_VOICE_DETECT_IGNORE_VOICE_TIME_WAVEFORM: float = 0.15
 # ノイズ発生を最小限にするため、カットするタイミングから余分に声と判定させる秒数 (以下の値の秒数 x 2 = 余分に声と判定させる秒数)
 S_VOICE_DETECT_EXTRA_TIME_WAVEFORM: float = 0.1
+
+""" AutoEditの設定 """
+# NvAFXのフォルダのパス
+S_NVAFX_DIR_PATH = Path(os.environ['ProgramW6432'], 'NVIDIA Corporation', 'NVIDIA Audio Effects SDK')
+# NvAFXのモデルフォルダのパス
+S_NVAFX_MODELS_DIR_PATH = Path(S_NVAFX_DIR_PATH, 'models')

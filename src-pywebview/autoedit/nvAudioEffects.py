@@ -7,7 +7,7 @@ __docformat__ = "restructuredtext"
 
 import ctypes, os, sys
 from ctypes import *
-from autoedit.settings import S_NVAFX_DIR_PATH
+from settings import S_NVAFX_DIR_PATH
 
 _int_types = (c_int16, c_int32)
 if hasattr(ctypes, "c_int64"):
