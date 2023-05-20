@@ -23,3 +23,23 @@ def make_dir_need_dirs():
     for need_dir_path in S_NEED_DIR_PATH_LIST:
         # フォルダが存在しなければ作成
         need_dir_path.mkdir(exist_ok=True)
+
+def get_dir_all_file_pathes(target_dir_path: Path) -> List[Path]:
+    """ 
+    指定したディレクトリ内に存在する、すべてのファイルリストパスを返す。
+    (サブディレクトリの中にあるファイルも含む)
+    """
+    # 結果となるファイルパスリスト
+    result_path_list = list()
+
+    # 指定したディレクトリの中にある(ファイル, フォルダ)を取得する
+    for item in target_dir_path.iterdir():
+        # アイテムがディレクトリなら、再帰的にサブディレクトリの中のファイルを取得し、結果リストに追加する
+        if item.is_dir():
+            result_path_list += get_dir_all_file_pathes(item)
+        # アイテムがファイルなら、結果リストに追加する
+        elif item.is_file():
+            result_path_list.append(item)
+
+    # 結果を返す
+    return result_path_list

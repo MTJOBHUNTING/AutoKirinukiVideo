@@ -1,9 +1,7 @@
 import webview
 from webview import Window
 from pathlib import Path
-
-from utils import make_dir_need_dirs
-from gui import EnumHTML, EnumCSS, EnumJS
+from utils import make_dir_need_dirs, get_dir_all_file_pathes
 from api import API
 from settings import *
 
@@ -13,44 +11,36 @@ class WebViewWindow:
         self.window: Window = webview.create_window(S_APP_TITLE, js_api=self.api, width=S_APP_WIDTH, height=S_APP_HEIGHT)
         self.api.window: Window = self.window
 
-    def thread_func(self):
-        self.load_html(EnumHTML.MAIN)
-        self.load_init_css()
-        self.load_init_js()
-
-    def load_init_css(self):
-        """ 初期化時に読み込まれるCSS """
-        self.load_css(EnumCSS.BOOTSTRAP)
-        self.load_css(EnumCSS.MAIN)
-
-    def load_init_js(self):
-        """ 初期化時に読み込まれるJS """
-        self.load_js(EnumJS.BOOTSTRAP)
-        self.load_js(EnumJS.MAIN)
-
     def run(self):
         """ アプリを開く """
         webview.start(self.thread_func, gui=S_APP_WEB_ENGINE, debug=S_DEBUG_FLAG)
 
-    def load_js(self, js_enum: EnumJS):
-        """ 指定したJSを読み込む関数 """
-        _js_text = self.load_gui_data(S_GUI_JS_DIR_NAME, js_enum.value)
-        self.window.evaluate_js(_js_text)
+    def thread_func(self):
+        # GUI関連のファイルが存在するディレクトリパス
+        gui_dir_path = Path(S_GUI_DIR_PATH)
+        # GUIディレクトリに存在するすべての関連ファイルを取得
+        gui_dir_all_file_pathes = get_dir_all_file_pathes(gui_dir_path)
+        
+        # GUI関連ファイルをすべて読み込む
+        for gui_file_path in gui_dir_all_file_pathes:
+            self.load_gui_data(gui_file_path)
+                
+    def load_gui_data(self, gui_file_path: Path):
+        """ GUI関連のファイルパス(HTML, JavaScript, CSS)を指定し、WebViewWindowに読み込む関数 """
+        # 指定したファイルのデータをテキストとして取得
+        _gui_data_text: str = gui_file_path.read_text(encoding=S_DEFAULT_ENCODING)
+        # 指定したファイルの拡張子
+        file_extension: str = gui_file_path.suffix
 
-    def load_css(self, css_enum: EnumCSS):
-        """ 指定したCSSを読み込む関数 """
-        _css_text = self.load_gui_data(S_GUI_CSS_DIR_NAME, css_enum.value)
-        self.window.load_css(_css_text)
-
-    def load_html(self, html_enum: EnumHTML):
-        """ 指定したHTMLの画面に遷移する関数 """
-        _html_text = self.load_gui_data(S_GUI_HTML_DIR_NAME, html_enum.value)
-        self.window.load_html(_html_text)
-
-    def load_gui_data(self, *gui_file_path: str) -> str:
-        """ 指定したパスのデータを取得する関数 """
-        _path = Path(S_GUI_DIR_PATH, *gui_file_path)
-        return _path.read_text(encoding=S_DEFAULT_ENCODING)
+        # HTMLファイルの場合
+        if file_extension == '.html':
+            self.window.load_html(_gui_data_text)
+        # JavaScriptファイルの場合
+        elif file_extension == '.js':
+            self.window.evaluate_js(_gui_data_text)
+        # CSSファイルの場合
+        elif file_extension == '.css':
+            self.window.load_css(_gui_data_text)
 
 def main():
     """ メイン関数 """

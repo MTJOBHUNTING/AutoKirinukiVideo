@@ -20,12 +20,6 @@ S_PROJECT_FILE_OUTPUT: str = './output/'
 """ アプリのGUI系ファイルが保存されたディレクトリの名前やパス """
 # GUIフォルダの相対パス
 S_GUI_DIR_PATH: str = './gui/'
-# HTMLフォルダの名前
-S_GUI_HTML_DIR_NAME: str = 'html'
-# CSSフォルダの名前
-S_GUI_CSS_DIR_NAME: str = 'css'
-# JavaScriptフォルダの名前
-S_GUI_JS_DIR_NAME: str = 'js'
 
 # アプリ内のデフォルトエンコーディング
 S_DEFAULT_ENCODING: str = 'UTF-8'
