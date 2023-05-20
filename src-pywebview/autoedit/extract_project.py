@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import List, Optional
-from settings import S_FFPROBE_EXE_PATH, S_DEFAULT_ENCODING
+from settings import S_FFPROBE_EXE_PATH
 
 import ffmpeg
 
