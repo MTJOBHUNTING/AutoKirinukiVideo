@@ -20,6 +20,9 @@ class WebViewWindow:
         gui_dir_path = Path(S_GUI_DIR_PATH)
         # GUIディレクトリに存在するすべての関連ファイルを取得
         gui_dir_all_file_pathes = get_dir_all_file_pathes(gui_dir_path)
+
+        # htmlファイルを一番最初に読み込むためにソートを行う
+        gui_dir_all_file_pathes.sort(key=lambda x: x.suffix == '.html', reverse=True)
         
         # GUI関連ファイルをすべて読み込む
         for gui_file_path in gui_dir_all_file_pathes:
