@@ -8,7 +8,7 @@ from settings import *
 class WebViewWindow:
     def __init__(self) -> None:
         self.api: API = API()
-        self.window: Window = webview.create_window(S_APP_TITLE, js_api=self.api, width=S_APP_WIDTH, height=S_APP_HEIGHT)
+        self.window: Window = webview.create_window(S_APP_TITLE, js_api=self.api, width=S_APP_WIDTH, height=S_APP_HEIGHT, frameless=True)
         self.api.window: Window = self.window
 
     def run(self):

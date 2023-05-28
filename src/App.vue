@@ -1,4 +1,5 @@
 <template>
+<TitleBar/>
 <select name="detect-mode" v-model="detectModeSelected">
     <option v-for="(modeItem, ix) in detectModeList" v-bind:value="modeItem.mode" v-bind:key="ix">{{ modeItem.text }}</option>
 </select>    
@@ -6,6 +7,8 @@
 </template>
 
 <script>
+import TitleBar from './components/TitleBar.vue'
+
 const DETECT_MODE = {
     VOLUME: 'VOLUME',
     WAVEFORM: 'WAVEFORM'
@@ -26,6 +29,9 @@ export default {
         loadVideoPy() {
             window.pywebview.api.load_video(this.detectModeSelected);
         }
+    },
+    components: {
+        TitleBar
     }
 }
 </script>

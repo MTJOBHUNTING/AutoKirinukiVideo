@@ -15,6 +15,14 @@ class API:
     def __init__(self):
         self.window: Window = None
 
+    def minimize_window(self):
+        """ ウィンドウを最小化する関数 """
+        self.window.minimize()
+
+    def close_window(self):
+        """ ウィンドウを閉じる関数 """
+        self.window.destroy()
+
     def load_video(self, target_detect_mode_str: str):
         """ 動画ファイルを読み込み、ジャンプカットを行う。 """
         # 検出モード(文字列) => 検出モード(DetectMode)へ

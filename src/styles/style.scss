@@ -1,0 +1,6 @@
+@use '@/themes/default.scss' as themes;
+
+body {
+    margin: 0;
+    background-color: var(--primary-color)
+}
